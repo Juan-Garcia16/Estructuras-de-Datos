@@ -9,7 +9,7 @@ int binarySearch (int A[], int i, int j, int k){
     {
         m = (i+j)/2;
         /*m = (i+j) >> 1;*/
-        if (k == m)
+        if (k == A[m])
         {
             r = m;
             break;
@@ -17,7 +17,7 @@ int binarySearch (int A[], int i, int j, int k){
         else {
             if (k > A[m])
             {
-                i = m - 1;
+                i = m + 1;
             }
             else {
                 j = m - 1;
@@ -25,7 +25,7 @@ int binarySearch (int A[], int i, int j, int k){
         }
     }
 
-    if (r = -1)
+    if (r == -1)
         r = -1*i -1;
     
     return r;
