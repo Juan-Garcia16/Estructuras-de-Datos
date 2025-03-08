@@ -1,51 +1,57 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define MAXN 1000000
 
-
-int binarySearch(int A[], int i, int j, int k){
+int binarySearch(long long int A[], int i, int j, long long int k){
     int r = -1, m;
 
     while (i <= j)
     {
-        m = (i + j) / 2;
+        m = (i + j) >> 1;
         if (k == A[m])
         {
             r = m;
             break;
-        }
-        else if (k > A[m])
+        } else if (k > A[m])
             i = m + 1;
         else
-            j = m - 1;
+            j = m - 1;    
     }
-
-    if (r == -1)
-        r = -1 * i - 1;
+    
     return r;
 }
 
-int main(int n) {
-    long long int k, triangular, kplus1;
-    int n;
-    
-    while(scanf("%llu", &n) && n != 0){
-        k = (-1 + sqrt(1 + 8*(double)n))/2;
-        kplus1 = k + 1;
-        
-        if(k % 2 == 0)
-            k /= 2;
-        else 
-            kplus1 /= 2;
-        triangular = k*kplus1;
-        
-        if(triangular == n)
-            printf("YES\n");
-        else
-            printf("NO\n");
+int main(){
+    int acumulador[MAXN+1], n, i, count = 0, j = 0;
+    long long int triangular[MAXN+1], result;
+
+
+    for (i = 1; i <= MAXN; i++)
+    {
+        triangular[i] = (long long int)i*(i + 1) / 2; 
     }
+    
+
+    for (i = 2; i <= MAXN; i++)
+    {   
+        result = binarySearch(triangular, 1, MAXN, triangular[i] + triangular[i-1]);
+        if (result > 0)
+            j = result;  
+        
+        if (i == j)
+        {
+            count++;    
+        }
+        
+        acumulador[i] = count;   
+    }
+
+    while (scanf("%d", &n) && n != 0)
+    {
+        printf("%d\n", acumulador[n]);
+    }
+    
+
     return 0;
 }
