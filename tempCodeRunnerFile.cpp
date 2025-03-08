@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define MAXN 1000000
+#define MAXN 100
 
 int binarySearch(long long int A[], int i, int j, int k){
     int r = -1, m;
@@ -55,12 +55,3 @@ int main(){
 
     return 0;
 }
-
-
-/*    for (i = 1; i < n; i++)
-    {
-        printf("%lld ", triangular[i]);
-    }
-
-    printf("\n\n\n %lld \n %d", triangular[0], count);
-    */
