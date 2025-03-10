@@ -1,125 +1,149 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define myInfinite 2147483647 
-#define MAXN 1000000 
+#include <math.h>
+#define MAXN 2000000
+#define infinity 2147483647
 
-void myMerge(int A[], int p, int q, int r)
-{
-    int n1 = q - p + 1, n2 = r - q, i, j, k;
-    int L[n1 + 1], R[n2 + 1];
+int collection[MAXN + 1];
 
-    for(i = 1; i <= n1; i++)
-        L[i] = A[p + i - 1];
+int BinarySearch(int A[], int i, int j, int k) {
+    int m, result = -1;
+
+    while (i <= j) {
+        m = (i + j) >> 1; 
+
+        if (A[m] == k) {
+            result = m;
+            break;
+        } else if (k > A[m]) {
+            i = m + 1;
+        } else {
+            j = m - 1;
+        }
+    }
+
+    if (result == -1)
+        result = (-1) * i - 1;
     
-    for(j = 1; j <= n2; j++)
-        R[j] = A[q + j];
+    return result;
+}
 
-    L[n1 + 1] = myInfinite;
-    R[n2 + 1] = myInfinite; 
+int BinarySearchFirstOccurrence(int A[], int i, int j, int k) {
+    int result, result2;
+    result = BinarySearch(A, i, j, k);
+    
+    if (result >= 0) {
+        result2 = BinarySearch(A, i, result - 1, k);
+        while (result2 >= 0) {
+            result = result2;
+            result2 = BinarySearch(A, i, result - 1, k);
+        }
+    }
+    return result;
+}
+
+int BinarySearchLastOccurrence(int A[], int i, int j, int k) {
+    int result, result2;
+    result = BinarySearch(A, i, j, k);
+
+    if (result >= 0) {
+        result2 = BinarySearch(A, result + 1, j, k);
+        while (result2 >= 0) {
+            result = result2;
+            result2 = BinarySearch(A, result + 1, j, k);
+        }
+    }
+    return result;
+}
+
+void myMerge (int A[], int p, int q, int r) {
+    int n1 = q - p + 1, n2 = r - q, i, j, k;
+    int L[n1+2], R[n2+2];
+    
+    for (i = 1; i <= n1; i++) L[i] = A[p+i-1];
+
+    for (j = 1; j <= n2; j++) R[j] = A[q+j];
+
+    L[n1+1] = infinity;
+    R[n2+1] = infinity;
     i = 1;
     j = 1;
 
-    for(k = p; k <= r; k++)
-    {
-        if(L[i] <= R[j])
-        {
+    for(k = p; k <= r; k++) {
+        if (L[i] <= R[j]) {
             A[k] = L[i];
             i++;
-        } 
-        else 
-        {
+        } else {
             A[k] = R[j];
             j++;
         }
-    } 
+    }
 }
 
-void MergeSort(int A[], int p, int r){
-    if (p < r){
-        int q = (p + r) / 2;
+void MergeSort (int A[], int p, int r) {
+    int q;
+    if (p < r) {
+        q =  (p + r) / 2;
         MergeSort(A, p, q);
         MergeSort(A, q + 1, r);
-        myMerge(A, p, q, r);
+        myMerge(A, p, q, r); 
     }
 }
 
-int binarySearch(int A[], int i, int j,int k){
-    int r = -1, m;
-
-    while (i <= j)
-    {
-        m = (i + j) >> 1;
-        if (k == A[m])
-        {
-            r = m;
-            break;
-        } else if (k > A[m])
-            i = m + 1;
-        else
-            j = m - 1;    
-    }
-
-    if (r == -1)
-        r = -1 *i - 1;
+int option1(int k, int collection[], int n){
+    int position = BinarySearch(collection, 1, n, k), isAdded = 0;
     
-    return r;
-}
-
-int BinarySearchFirstOcurrence(int A[], int i, int j, int k){
-    int r = binarySearch(A, i, j, k), r2;
-    
-    if (r < 0) 
-        return r;
-
-    if (r > 0)
-    {
-        r2 = binarySearch(A, i, r-1, k);
-        while (r2 >= 0)
-        {
-            r = r2;
-            r2 = binarySearch(A, i, r-1, k);
+    if (position < 0){
+        position =  (-1) * position - 1;
+        
+        if(position > n){
+            collection[n + 1] = k;
+            isAdded = 1;
         }
-    }
-    return r;
+        else
+            collection[position] = k;
+    }    
+    return isAdded;
 }
 
-int optionOne(int k, int collection[], int n){
+int main (){
+    int n, q, a, b, k, selection, i, idQuery, newSize, left, rigth, r;
     
-    int position = binarySearch(collection, 1, n, k);
-
-
-    if (position < 0)
-    {
-        position = -1*position - 1;
-        collection[position] = k;
-    } 
-    
-    
-        
-}
-
-int main(){
-    int n, q, k, a, b, option, i, j, newSize;
-
     scanf("%d %d", &n, &q);
-    int collection[MAXN + 1];
-
-    for (i = 1; i <= n; i++)
-        scanf("%d ", &collection[i]);
-
+    
+    
+    for(i = 1; i <= n; i++)
+        scanf("%d", &collection[i]);    
+        
     MergeSort(collection, 1, n);
-    
-    for (j = 1; j <= q ; j++)
-    {
-        scanf("%d", &option);
-
-        if (option == 1)
-            newSize = optionOne(scanf("%d", &k), collection, n);
         
+    for(idQuery = 1; idQuery <= q; idQuery++){
         
-    }
-    
-
-
+        scanf("%d", &selection);
+        
+        if(selection == 1){
+            
+            scanf("%d", &k);
+            newSize = option1(k, collection, n);
+            if (newSize == 1)
+                n = n+1;    
+        }
+        
+        else{
+            scanf("%d %d", &a, &b);
+            left = BinarySearchFirstOccurrence(collection, 1, n, a);
+            rigth = BinarySearchLastOccurrence(collection, 1, n, b);
+            
+            if(left < 0)
+                left = -1 * left -1;
+            
+            if(rigth < 0)
+                rigth = -1 * rigth - 2;
+        
+            r = rigth - left + 1;
+            
+            printf("%d\n", r);   
+        }
+    }  
+    return 0;
 }
-
