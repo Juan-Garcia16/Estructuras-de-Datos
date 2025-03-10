@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define myInfinite 2147483647 
-#define MAXN 500000 
+#define MAXN 1000000 
 
 void myMerge(int A[], int p, int q, int r)
 {
@@ -58,6 +58,9 @@ int binarySearch(int A[], int i, int j,int k){
         else
             j = m - 1;    
     }
+
+    if (r == -1)
+        r = -1 *i - 1;
     
     return r;
 }
@@ -80,7 +83,43 @@ int BinarySearchFirstOcurrence(int A[], int i, int j, int k){
     return r;
 }
 
+int optionOne(int k, int collection[], int n){
+    
+    int position = binarySearch(collection, 1, n, k);
+
+
+    if (position < 0)
+    {
+        position = -1*position - 1;
+        collection[position] = k;
+    } 
+    
+    
+        
+}
 
 int main(){
+    int n, q, k, a, b, option, i, j, newSize;
+
+    scanf("%d %d", &n, &q);
+    int collection[MAXN + 1];
+
+    for (i = 1; i <= n; i++)
+        scanf("%d ", &collection[i]);
+
+    MergeSort(collection, 1, n);
+    
+    for (j = 1; j <= q ; j++)
+    {
+        scanf("%d", &option);
+
+        if (option == 1)
+            newSize = optionOne(scanf("%d", &k), collection, n);
+        
+        
+    }
+    
+
 
 }
+
