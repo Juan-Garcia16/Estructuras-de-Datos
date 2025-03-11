@@ -4,14 +4,14 @@
 #define myInfinite 2147483647
 
 int main(){
-    int A[MAXN + 1], i, j, n , q, idQuery, sum;
+    int A[MAXN + 1], i, j, n , q, idConsulta, sum;
     long long int resutl;
 
     scanf("%d %d", &n, &q);
     for(i = 1; i <= n; i++)
         scanf("%d", &A[i]);
 
-    for(idQuery = 1; idQuery <= q; idQuery++){
+    for(idConsulta = 1; idConsulta <= q; idConsulta++){
         
         resutl = 0;
         scanf("%d", &sum);

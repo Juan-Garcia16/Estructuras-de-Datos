@@ -71,7 +71,7 @@ int BinarySearch (int A[], int i, int j, int k){
 }
 
 int main(){
-    int A[MAXN + 1], i, position, n, q, idQuery, sum, element;
+    int A[MAXN + 1], i, position, n, q, idConsulta, sum, element;
     long long int result;
 
     scanf("%d %d", &n, &q);
@@ -80,7 +80,7 @@ int main(){
 
     MergeSort(A, 1, n);
 
-    for(idQuery = 1; idQuery <= q; idQuery++)
+    for(idConsulta = 1; idConsulta <= q; idConsulta++)
     {
         result = 0;
         scanf("%d", &sum);

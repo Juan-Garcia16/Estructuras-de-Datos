@@ -107,7 +107,7 @@ int option1(int k, int collection[], int n){
 }
 
 int main (){
-    int n, q, a, b, k, selection, i, idQuery, newSize, left, rigth, r;
+    int n, q, a, b, k, selection, i, idConsulta, newSize, left, rigth, r;
     
     scanf("%d %d", &n, &q);
     
@@ -117,7 +117,7 @@ int main (){
         
     MergeSort(collection, 1, n);
         
-    for(idQuery = 1; idQuery <= q; idQuery++){
+    for(idConsulta = 1; idConsulta <= q; idConsulta++){
         
         scanf("%d", &selection);
         

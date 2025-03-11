@@ -54,7 +54,7 @@ int BinarySearchLastOcurrence(int A[], int i, int j, int k) {
 }
 
 int main() {
-    int A[MAXN + 1], n, q, index, idQuery, k, element;
+    int A[MAXN + 1], n, q, index, idConsulta, k, element;
     int i, leftIndex, rightIndex;
     long long int result = 0;
     
@@ -68,7 +68,7 @@ int main() {
         A[index] = A[index - 1] + element;
     }
 
-    for (idQuery = 1; idQuery <= q; idQuery++) {
+    for (idConsulta = 1; idConsulta <= q; idConsulta++) {
         
         result = 0;
         scanf("%d", &k);
@@ -81,7 +81,7 @@ int main() {
             }
             
         }
-        if(idQuery == 1)    
+        if(idConsulta == 1)    
             printf("%lld", result);
         else
             printf(" %lld", result);

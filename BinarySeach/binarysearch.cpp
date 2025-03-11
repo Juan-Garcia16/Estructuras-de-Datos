@@ -32,7 +32,7 @@ int binarySearch (int A[], int i, int j, int k){
 }
 
 int main(){
-    int TN[MAXN + 1], index, q, idQuery, element;
+    int TN[MAXN + 1], index, q, idConsulta, element;
     int position;
     TN[0] = 0;
     
@@ -41,7 +41,7 @@ int main(){
 
     scanf("%d", &q);
 
-    for (idQuery = 1; idQuery <= q; idQuery++)
+    for (idConsulta = 1; idConsulta <= q; idConsulta++)
     {
         scanf("%d", &element);
         position = binarySearch(TN, 1, MAXN, element);

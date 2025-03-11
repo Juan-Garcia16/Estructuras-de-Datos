@@ -55,7 +55,7 @@ int BinarySearchLastOccurrence(int A[], int i, int j, int k) {
 }
 
 int main() {
-    int A[MAXN + 1], n, index, q, idQuery, element;
+    int A[MAXN + 1], n, index, q, idConsulta, element;
     int position;
 
     scanf("%d", &n);
@@ -66,7 +66,7 @@ int main() {
 
     scanf("%d", &q);
 
-    for (idQuery = 1; idQuery <= q; idQuery++) {
+    for (idConsulta = 1; idConsulta <= q; idConsulta++) {
         scanf("%d", &element);
         position = BinarySearchFirstOccurrence(A, 1, n, element);
         
