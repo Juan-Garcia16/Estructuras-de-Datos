@@ -24,7 +24,7 @@ int BinarySearch(int A[], int i, int j, int k) {
 }
 
 int main(){
-    int n, PosicionRanas[MAX + 1], LiriosLibres[MAX + 1], lirioLibre, contador = 1, q, salto;
+    int n, PosicionRanas[2*MAX + 1], LiriosLibres[MAX + 1], lirioLibre, contador = 1, q, salto;
 
     scanf("%d", &n);
 
@@ -49,7 +49,8 @@ int main(){
     {
         scanf("%d", &salto);
 
-        int lirioOcupado = PosicionRanas[BinarySearch(PosicionRanas, 1, n, salto)];
+        int lirioOcupado = PosicionRanas[salto];
+        //int lirioOcupado = PosicionRanas[BinarySearch(PosicionRanas, 1, n, salto)];
         //valor en la posicion salto
 
         int lirioCercano = BinarySearch(LiriosLibres, 1, n, lirioOcupado);
