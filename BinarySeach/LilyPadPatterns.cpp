@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAX 1000000
+#define MAX 1200000
 
 int BinarySearch(int A[], int i, int j, int k) {
     int m, result = -1;
@@ -24,16 +24,18 @@ int BinarySearch(int A[], int i, int j, int k) {
 }
 
 int main(){
-    int n, PosicionRanas[2*MAX + 1], LiriosLibres[MAX + 1], lirioLibre, contador = 1, q, salto;
+    int n, PosicionRanas[MAX + 1], LiriosLibres[MAX + 1], lirioLibre, contador = 1, q, salto;
 
     scanf("%d", &n);
 
     for (int i = 1; i <= n; i++)
         scanf("%d ", &PosicionRanas[i]);
-
-    for (int i = 1; i <= 2*n; i++)
+    
+    scanf("%d", &q);
+    
+    for (int i = 1; i <= MAX + 1; i++)
     {
-        lirioLibre = BinarySearch(PosicionRanas, 1, n, i);
+        lirioLibre = BinarySearch(PosicionRanas, 1, n + 1, i);
 
         if (lirioLibre < 0)
         {
@@ -42,18 +44,14 @@ int main(){
         }
         
     }
-    
-    scanf("%d", &q);
 
     for (int i = 1; i <= q; i++)
     {
         scanf("%d", &salto);
 
         int lirioOcupado = PosicionRanas[salto];
-        //int lirioOcupado = PosicionRanas[BinarySearch(PosicionRanas, 1, n, salto)];
-        //valor en la posicion salto
 
-        int lirioCercano = BinarySearch(LiriosLibres, 1, n, lirioOcupado);
+        int lirioCercano = BinarySearch(LiriosLibres, 1, contador - 1, lirioOcupado);
         lirioCercano = -1 * lirioCercano - 1;
 
         int lirioVacio = LiriosLibres[lirioCercano];
