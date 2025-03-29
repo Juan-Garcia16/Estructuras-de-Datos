@@ -75,7 +75,6 @@ struct node *insertInAscendentLinkedList(struct node *head,int n){
 int main(){
     int n, operation; 
     struct node *head = NULL;
-
     while(scanf("%d %d", &operation, &n) != EOF)
     {
         if(operation == 1) //insert
