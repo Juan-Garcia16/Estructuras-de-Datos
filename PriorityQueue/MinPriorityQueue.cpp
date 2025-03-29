@@ -87,7 +87,6 @@ void MinPQ_Insert(int Q[], int key, int *heapSize){
     *heapSize = *heapSize + 1;
     Q[*heapSize] = myPositiveInfinite;
     MinPQ_DecreaseKey(Q, *heapSize, key);
-
 }
 
 
