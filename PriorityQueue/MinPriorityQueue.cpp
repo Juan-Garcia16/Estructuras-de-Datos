@@ -17,6 +17,7 @@ int Right(int i){
     return 2*i + 1;
 }
 
+//Ordena monton por monton hasta la raiz, es llamado por extract
 void Minheapify(int Q[], int i, int heapSize){
     int l, r, least, temp;
 
@@ -44,6 +45,7 @@ int MinPQ_Minimum(int Q[]){
     return Q[1];
 }
 
+//extraer la raiz, reorganiza el elemento
 int MinPQ_Extract(int Q[], int *heapSize){
     int min = myNegativeInfinite;
 
@@ -60,6 +62,7 @@ int MinPQ_Extract(int Q[], int *heapSize){
     return min;
 }
 
+//Organizar el arbol
 void MinPQ_DecreaseKey(int Q[], int i, int key){
     int temp;
 
@@ -68,7 +71,7 @@ void MinPQ_DecreaseKey(int Q[], int i, int key){
     else
     {
         Q[i] = key;
-        while (i > 1 && Q[Parent(i)] > Q[i])
+        while (i > 1 && Q[Parent(i)] > Q[i]) //i llega a la raiz, por lo cual termina el intercambio
         {
             temp = Q[i];
             Q[i] = Q[Parent(i)];
@@ -86,6 +89,44 @@ void MinPQ_Insert(int Q[], int key, int *heapSize){
     MinPQ_DecreaseKey(Q, *heapSize, key);
 
 }
+
+
+/* Construir una cola de priridad a partir de una arreglo existe
+void buildMinHeap(int Q[], int heapsize){
+    int lastParentLeaf = heapsize / 2;
+
+    for (int i = lastParentLeaf; i > 0; i--)
+    {
+        Minheapify(Q, i, heapsize);
+    }
+}
+*/
+
+/*
+En extract, para esta funcion el min seria max, y es positiveinfinite
+void Maxheapify(int Q[], int i, int heapSize){
+    int l, r, least, temp;
+
+    l = Left(i);
+    r = Right(i);
+    if (l <= heapSize && Q[l] > Q[i])
+        least = l;
+    else
+        least = i;
+
+    if (r <= heapSize && Q[r] > Q[least])
+        least = r;
+    
+    if (least != i)
+    {
+        temp = Q[i];
+        Q[i] = Q[least];
+        Q[least] = temp;
+
+        Maxheapify(Q, least, heapSize);
+    }
+}
+*/
 
 int main(){
     int Q[MAXN + 1],operation, element, heapSize = 0;
