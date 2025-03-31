@@ -4,8 +4,7 @@
 #include <string.h>
 #define myPositiveInfinite 2147483647
 #define myNegativeInfinite -2147483647
-#define MAXN 100
-//#define MAXN 1000000
+#define MAXN 1000000
 
 typedef struct {
     char name[20];
@@ -33,6 +32,7 @@ void Minheapify(vaccine Q[], int i, int heapSize){
     l = Left(i);
     r = Right(i);
 
+    least = i;
     if (l <= heapSize)
     {
         if (Q[l].priority < Q[least].priority || 
@@ -45,7 +45,7 @@ void Minheapify(vaccine Q[], int i, int heapSize){
     if (r <= heapSize)
     {
         if (Q[r].priority < Q[least].priority ||
-            (Q[r].priority == Q[least].priority && Q[r].order < Q[least].order))
+            (Q[r].priority == Q[least].priority && Q[r].order < Q[least].order)) // Compara simultaneamente el orden de ingreso a la cola
         least = r;
     }
 
@@ -81,8 +81,8 @@ void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
     else
     {
         Q[i] = key;
-        while (i > 1 && Q[Parent(i)].priority > Q[i].priority || 
-              (Q[Parent(i)].priority == Q[i].priority && Q[Parent(i)].order > Q[i].order)) //i llega a la raiz, por lo cual termina el intercambio
+        while ((i > 1) && ((Q[Parent(i)].priority > Q[i].priority) || 
+                ((Q[Parent(i)].priority == Q[i].priority) && (Q[Parent(i)].order > Q[i].order)))) // Compara simultaneamente el orden de ingreso a la cola
         {
             temp = Q[i];
             Q[i] = Q[Parent(i)];
