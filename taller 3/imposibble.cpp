@@ -1,17 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
 #define myPositiveInfinite 2147483647
 #define myNegativeInfinite -2147483647
 #define MAXN 100
-//#define MAXN 1000000
-
-typedef struct {
-    char name[20];
-    int priority;
-    int order;
-} vaccine;
+//#define MAXN 1000000000
 
 int Parent(int i){
     return i/2;
@@ -25,30 +18,19 @@ int Right(int i){
     return 2*i + 1;
 }
 
-//Ordena monton por monton hasta la raiz, es llamado por extract
-void Minheapify(vaccine Q[], int i, int heapSize){
-    int l, r, least;
-    vaccine temp;
+void Minheapify(int Q[], int i, int heapSize){
+    int l, r, least, temp;
 
     l = Left(i);
     r = Right(i);
-
-    if (l <= heapSize)
-    {
-        if (Q[l].priority < Q[least].priority || 
-            (Q[l].priority == Q[least].priority && Q[l].order < Q[least].order))
-            least = l;
-    }    
+    if (l <= heapSize && Q[l] < Q[i])
+        least = l;
     else
         least = i;
 
-    if (r <= heapSize)
-    {
-        if (Q[r].priority < Q[least].priority ||
-            (Q[r].priority == Q[least].priority && Q[r].order < Q[least].order))
+    if (r <= heapSize && Q[r] < Q[least])
         least = r;
-    }
-
+    
     if (least != i)
     {
         temp = Q[i];
@@ -59,30 +41,15 @@ void Minheapify(vaccine Q[], int i, int heapSize){
     }
 }
 
-//extraer la raiz, reorganiza el elemento
-void MinPQ_Extract(vaccine Q[], int *heapSize){
+void MinPQ_DecreaseKey(int Q[], int i, int key){
+    int temp;
 
-    if (*heapSize < 1)
-        printf("Error: Heap underflow.\n");
-    else
-    {
-        Q[1] = Q[*heapSize];
-        *heapSize = *heapSize - 1;
-        Minheapify(Q, 1, *heapSize);
-    }
-}
-
-//Organizar el arbol
-void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
-    vaccine temp;
-
-    if (key.priority > Q[i].priority)
+    if (key > Q[i])
         printf("New key is higher than current\n");
     else
     {
         Q[i] = key;
-        while (i > 1 && Q[Parent(i)].priority > Q[i].priority || 
-              (Q[Parent(i)].priority == Q[i].priority && Q[Parent(i)].order > Q[i].order)) //i llega a la raiz, por lo cual termina el intercambio
+        while (i > 1 && Q[Parent(i)] > Q[i]) //i llega a la raiz, por lo cual termina el intercambio
         {
             temp = Q[i];
             Q[i] = Q[Parent(i)];
@@ -94,39 +61,70 @@ void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
 
 }
 
-void MinPQ_Insert(vaccine Q[], vaccine key, int *heapSize){
+int MinPQ_Extract(int Q[], int *heapSize){
+    int min = myNegativeInfinite;
+
+    if (*heapSize < 1)
+        printf("Error: Heap underflow.\n");
+    else
+    {
+        min = Q[1];
+        Q[1] = Q[*heapSize];
+        *heapSize = *heapSize - 1;
+        Minheapify(Q, 1, *heapSize);
+    }
+
+    return min;
+}
+
+void MinPQ_Insert(int Q[], int key, int *heapSize){
     *heapSize = *heapSize + 1;
-    Q[*heapSize].priority = myPositiveInfinite;
+    Q[*heapSize] = myPositiveInfinite;
     MinPQ_DecreaseKey(Q, *heapSize, key);
 }
 
-int main(){
-    vaccine dates[MAXN + 1], person;
-    char name[21];
-    int heapSize = 0, order = 1;
 
-    while (scanf("%20s", name) != EOF) 
+int main(){
+    int n, IDnumber[MAXN + 1], element, heapSize = 0, reference, min, found = 0;
+    
+    while(scanf("%d", &n) && n != EOF)
     {
-        if (strcmp(name, "V") == 0) {
-            if (heapSize == 0)
-                printf("\n");
-            else 
-            {
-                printf("%s\n", dates[1].name);
-                MinPQ_Extract(dates, &heapSize);
-            }
-        } 
-        else 
+        for (int i = 1; i < n; i++)
         {
-            strcpy(person.name, name);
-            scanf("%d", &person.priority);
-            person.priority *= -1; // Para manejar el heap como min heap
-            person.order = order;
-            MinPQ_Insert(dates, person, &heapSize);
-            order++;
+            scanf("%d", &element);
+            MinPQ_Insert(IDnumber, element, &heapSize);
         }
+
+        reference = IDnumber[1];
+
+        for (int i = 1; i < n ; i++)
+        {
+            min = MinPQ_Extract(IDnumber, &heapSize);
+
+            if (min == reference)
+                reference++;
+            else
+            {
+                found = 1;
+                break;
+            }
+        }
+
+        if (found == 0)
+            printf("IMPOSSIBLE\n");
+        else
+            printf("%d\n", reference);
+        
+        while (heapSize > 0)
+        {
+            MinPQ_Extract(IDnumber, &heapSize);
+        }
+        
+        found = 0;
+        reference = 0;
     }
     return 0;
 }
+
 
 
