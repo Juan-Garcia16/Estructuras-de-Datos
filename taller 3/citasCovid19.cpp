@@ -10,6 +10,7 @@
 typedef struct {
     char name[20];
     int priority;
+    int order;
 } vaccine;
 
 int Parent(int i){
@@ -31,14 +32,23 @@ void Minheapify(vaccine Q[], int i, int heapSize){
 
     l = Left(i);
     r = Right(i);
-    if (l <= heapSize && Q[l].priority < Q[i].priority)
-        least = l;
+
+    if (l <= heapSize)
+    {
+        if (Q[l].priority < Q[least].priority || 
+            (Q[l].priority == Q[least].priority && Q[l].order < Q[least].order))
+            least = l;
+    }    
     else
         least = i;
 
-    if (r <= heapSize && Q[r].priority < Q[least].priority)
+    if (r <= heapSize)
+    {
+        if (Q[r].priority < Q[least].priority ||
+            (Q[r].priority == Q[least].priority && Q[r].order < Q[least].order))
         least = r;
-    
+    }
+
     if (least != i)
     {
         temp = Q[i];
@@ -51,6 +61,7 @@ void Minheapify(vaccine Q[], int i, int heapSize){
 
 //extraer la raiz, reorganiza el elemento
 void MinPQ_Extract(vaccine Q[], int *heapSize){
+
     if (*heapSize < 1)
         printf("Error: Heap underflow.\n");
     else
@@ -69,9 +80,9 @@ void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
         printf("New key is higher than current\n");
     else
     {
-        Q[i].priority = key.priority;
-        strcpy(Q[i].name, key.name);
-        while (i > 1 && Q[Parent(i)].priority > Q[i].priority) //i llega a la raiz, por lo cual termina el intercambio
+        Q[i] = key;
+        while (i > 1 && Q[Parent(i)].priority > Q[i].priority || 
+              (Q[Parent(i)].priority == Q[i].priority && Q[Parent(i)].order > Q[i].order)) //i llega a la raiz, por lo cual termina el intercambio
         {
             temp = Q[i];
             Q[i] = Q[Parent(i)];
@@ -92,7 +103,7 @@ void MinPQ_Insert(vaccine Q[], vaccine key, int *heapSize){
 int main(){
     vaccine dates[MAXN + 1], person;
     char name[21];
-    int heapSize = 0, i = 1;
+    int heapSize = 0, order = 1;
 
     while (scanf("%20s", name) != EOF) 
     {
@@ -110,8 +121,9 @@ int main(){
             strcpy(person.name, name);
             scanf("%d", &person.priority);
             person.priority *= -1; // Para manejar el heap como min heap
-
+            person.order = order;
             MinPQ_Insert(dates, person, &heapSize);
+            order++;
         }
     }
     return 0;
