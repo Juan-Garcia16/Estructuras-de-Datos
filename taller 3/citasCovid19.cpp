@@ -4,8 +4,8 @@
 #include <string.h>
 #define myPositiveInfinite 2147483647
 #define myNegativeInfinite -2147483647
-//#define MAXN 100
-#define MAXN 1000000
+#define MAXN 100
+//#define MAXN 1000000
 
 typedef struct {
     char name[20];
@@ -67,14 +67,15 @@ void MinPQ_Extract(vaccine Q[], int *heapSize){
 }
 
 //Organizar el arbol
-void MinPQ_DecreaseKey(vaccine Q[], int i, int key){
+void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
     vaccine temp;
 
-    if (key > Q[i].priority)
+    if (key.priority > Q[i].priority)
         printf("New key is higher than current\n");
     else
     {
-        Q[i].priority = key;
+        Q[i].priority = key.priority;
+        strcpy(Q[i].name, key.name);
         while (i > 1 && Q[Parent(i)].priority > Q[i].priority) //i llega a la raiz, por lo cual termina el intercambio
         {
             temp = Q[i];
@@ -90,36 +91,33 @@ void MinPQ_DecreaseKey(vaccine Q[], int i, int key){
 void MinPQ_Insert(vaccine Q[], vaccine key, int *heapSize){
     *heapSize = *heapSize + 1;
     Q[*heapSize].priority = myPositiveInfinite;
-    MinPQ_DecreaseKey(Q, *heapSize, key.priority);
+    MinPQ_DecreaseKey(Q, *heapSize, key);
 }
 
 int main(){
-    vaccine person, dates[MAXN + 1];
-    char name[20];
-    int heapSize = 0;
+    vaccine dates[MAXN + 1], person;
+    char name[21];
+    int heapSize = 0, i = 1;
 
-    while (scanf("%s", name) != EOF)
+    while (scanf("%20s", name) != EOF) 
     {
-        if (strcmp(name, "V") == 0)
-        {
-           if (heapSize == 0)
+        if (strcmp(name, "V") == 0) {
+            if (heapSize == 0)
                 printf("\n");
-            else
+            else 
             {
                 printf("%s\n", dates[1].name);
                 MinPQ_Extract(dates, &heapSize);
             }
-           
-        }
-        else
+        } 
+        else 
         {
             strcpy(person.name, name);
             scanf("%d", &person.priority);
-            person.priority = -1 * person.priority;
+            person.priority *= -1; // Para manejar el heap como min heap
 
             MinPQ_Insert(dates, person, &heapSize);
         }
-        
     }
     return 0;
 }
