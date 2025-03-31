@@ -51,19 +51,14 @@ void Minheapify(vaccine Q[], int i, int heapSize){
 
 //extraer la raiz, reorganiza el elemento
 void MinPQ_Extract(vaccine Q[], int *heapSize){
-    //char min[20];
-    //min.priority = myNegativeInfinite;
-
     if (*heapSize < 1)
         printf("Error: Heap underflow.\n");
     else
     {
-        //strcpy(min, Q[1].name);
         Q[1] = Q[*heapSize];
         *heapSize = *heapSize - 1;
         Minheapify(Q, 1, *heapSize);
     }
-    //return min;
 }
 
 //Organizar el arbol
