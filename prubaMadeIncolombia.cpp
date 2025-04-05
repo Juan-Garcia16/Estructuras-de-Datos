@@ -4,7 +4,7 @@
 #define myPositiveInfinite 2147483647
 #define myNegativeInfinite -2147483647
 #define MAXN 100
-//#define MAXN 1000000
+//#define MAXN 500001
 
 int Parent(int i){
     return i/2;
@@ -84,7 +84,7 @@ void MinPQ_Insert(int Q[], int key, int *heapSize){
 }
 
 int main(){
-    int dataSet[MAXN + 1], n, i, j, element, heapSize = 0, median, sum = 0;
+    int dataMin[MAXN + 1], dataMax[MAXN + 1], n, i, j, element, heapSize = 0, median, sum = 0;
 
     while (scanf("%d", &n) > 0)
     {

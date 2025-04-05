@@ -3,7 +3,8 @@
 #include <math.h>
 #define myPositiveInfinite 2147483647
 #define myNegativeInfinite -2147483647
-#define MAXN 500001
+#define MAXN 100
+//#define MAXN 500001
 
 int Parent(int i){
     return i/2;
@@ -83,17 +84,15 @@ void MinPQ_Insert(int Q[], int key, int *heapSize){
 }
 
 int main(){
-    int dataMin[MAXN + 1], dataMax[MAXN + 1], n, i, element, heapSizeMin = 0, heapSizeMax = 0, temp;
+    int dataMin[MAXN + 1], dataMax[MAXN + 1], n, i, element, heapSizeMin = 0, heapSizeMax = 0, median = 0, temp;
     double mean;
-    long long int median;
 
-    while (scanf("%d", &n) && n > 0)
+    while (scanf("%d", &n) > 0)
     {
         median = 0;
         for(i = 1; i <= n; i++)
         {
             scanf("%d", &element);
-
             if (heapSizeMax == 0 || element <= (-1 * dataMax[1]))
                 MinPQ_Insert(dataMax, -1*element, &heapSizeMax);
             else
@@ -109,13 +108,14 @@ int main(){
                 temp = MinPQ_Extract(dataMin, &heapSizeMin);
                 MinPQ_Insert(dataMax, -1 * temp, &heapSizeMax);
             }
-            
+
             median += -1 * dataMax[1];
         }
 
         mean = (double)median / n;
-        printf("%.2lf\n", mean);
         
+        printf("%.2lf\n", mean);
+
         while (heapSizeMax > 0)
         {
             MinPQ_Extract(dataMax, &heapSizeMax);
