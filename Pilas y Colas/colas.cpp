@@ -75,7 +75,7 @@ int main(){
     struct node *tail = NULL; // Inicializamos la cola como vacía
     int operation, element; // Variables para la operación y el elemento a insertar/eliminar
 
-    while (scanf("%d", &element) != EOF)
+    while (scanf("%d", &operation) != EOF)
     {
         if (operation == 1) // Operación de enqueue, encolar un elemento (insertar)
         {
