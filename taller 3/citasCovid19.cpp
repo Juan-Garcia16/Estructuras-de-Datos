@@ -32,22 +32,15 @@ void Minheapify(vaccine Q[], int i, int heapSize){
     l = Left(i);
     r = Right(i);
 
-    least = i;
-    if (l <= heapSize)
-    {
-        if (Q[l].priority < Q[least].priority || 
-            (Q[l].priority == Q[least].priority && Q[l].order < Q[least].order))
+    if ((l <= heapSize) && ((Q[l].priority < Q[i].priority) || 
+            ((Q[l].priority == Q[i].priority) && (Q[l].order < Q[i].order))))
             least = l;
-    }    
     else
         least = i;
 
-    if (r <= heapSize)
-    {
-        if (Q[r].priority < Q[least].priority ||
-            (Q[r].priority == Q[least].priority && Q[r].order < Q[least].order)) // Compara simultaneamente el orden de ingreso a la cola
+    if ((r <= heapSize) && ((Q[r].priority < Q[least].priority) ||
+            ((Q[r].priority == Q[least].priority) && (Q[r].order < Q[least].order)))) // Compara simultaneamente el orden de ingreso a la cola
         least = r;
-    }
 
     if (least != i)
     {
@@ -81,8 +74,7 @@ void MinPQ_DecreaseKey(vaccine Q[], int i, vaccine key){
     else
     {
         Q[i] = key;
-        while ((i > 1) && ((Q[Parent(i)].priority > Q[i].priority) || 
-                ((Q[Parent(i)].priority == Q[i].priority) && (Q[Parent(i)].order > Q[i].order)))) // Compara simultaneamente el orden de ingreso a la cola
+        while ((i > 1) && ((Q[Parent(i)].priority > Q[i].priority))) 
         {
             temp = Q[i];
             Q[i] = Q[Parent(i)];
