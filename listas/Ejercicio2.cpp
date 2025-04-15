@@ -36,7 +36,7 @@ void printLinkedList(struct node *head){
 
 }
 
-struct node *insertInAscendentLinkedList(struct node *head,int n){
+struct node *InsertInAscendentLinkedList(struct node *head,int n){
     struct node *newNode, *current, *previous;
     newNode = (struct node *)malloc(sizeof(struct node));
     newNode->key = n;
@@ -67,20 +67,75 @@ struct node *insertInAscendentLinkedList(struct node *head,int n){
             previous->next = newNode;
         }
     }
-
     return head;
 }
 
+struct node *DeleteElementOfAscendentLinkedList(struct node *head, int element){
+    struct node *previous, *current;
+    if (head == NULL)
+        printf("The linked list is empty.\n");
+    else
+    {
+        if (element < head->key)
+            printf("The %d is not in linked list\n", element);
+        else
+        {
+            if (element == head->key)
+            {
+                current = head;
+                head = head->next;
+                free(current);
+            }
+            else
+            {
+                current = head->next;
+                previous = head;
+
+                while ((current != NULL) && (element > current->key))
+                {
+                    previous = current;
+                    current = current->next;
+                }
+                if (current == NULL)
+                    printf("The %d is not in linked list\n", element);
+                else
+                {
+                    if (element == current->key)
+                    {
+                        previous->next = current->next;
+                        free(current);
+                    }
+                    else
+                        printf("The %d is not in linked list\n", element);
+                }    
+            }
+        }
+    }
+    return head;   
+}
+
+
 
 int main(){
-    int n, operation; 
+    int element, operation; 
     struct node *head = NULL;
-    while(scanf("%d %d", &operation, &n) != EOF)
+    while(scanf("%d %d", &operation, &element) != EOF)
     {
         if(operation == 1) //insert
         {
-            head = insertInAscendentLinkedList(head, n);
+            head = InsertInAscendentLinkedList(head, element);
             printLinkedList(head);
+        }
+        else
+        {
+            if (operation == 2) //Delete
+            {
+                head = DeleteElementOfAscendentLinkedList(head, element);
+                printLinkedList(head);
+            }
+            else
+                printf("Bad use \n 1.Insert\n 2.Delete\n")
+;            
         }
     }
     return 0; // Fin del programa
