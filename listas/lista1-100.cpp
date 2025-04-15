@@ -44,7 +44,6 @@ struct node *deleteLinkedList(struct node *head){
         head = head->next;   // Avanzamos la cabeza al siguiente nodo
         free(current);       // Liberamos la memoria del nodo actual
     }
-
     return head;
 }
 
