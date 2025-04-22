@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define myPositiveInfinite 2147483647
+#define myNegativeInfinite -2147483647
+#define MAXN 10000
 
 // Definicion de la estructura de un nodo para lista circular doblemente enlazada
 struct node{
@@ -7,41 +10,6 @@ struct node{
     struct node *prev;
     struct node *next;
 };
-
-struct node *InsertInAscendentLinkedList(struct node *head,int n){
-    struct node *newNode, *current, *previous;
-    newNode = (struct node *)malloc(sizeof(struct node));
-    newNode->key = n;
-
-    if(head == NULL) //caso en el que la lista este vacia
-    {
-        newNode->next = head;
-        head = newNode;
-    }
-    else
-    {
-        if(newNode->key <= head->key)
-        {
-            newNode->next = head;
-            head = newNode;
-        }
-        else
-        {
-            previous = head;
-            current = head->next;
-            while (current != NULL && (n > current->key))// si current queda apuntando a null, significa que el elemento quedaria de ultimo
-            {
-                previous = current;
-                current = current->next;
-            }
-            
-            newNode->next = current;
-            previous->next = newNode;
-        }
-    }
-    return head;
-}
-
 
 struct node *InsertElementInCircularDoublyLinkedList(struct node *tail, int element){
     struct node *newNode;
@@ -90,43 +58,109 @@ struct node *DeleteFirstNodeOfCircularDoublyLinkedList(struct node *tail){
     return tail;
 }
 
-void printLinkedList(struct node *head){
-    struct node *current = head;
 
-    while(current != NULL) // Mientras no lleguemos al final de la lista
-    {
-        printf("%d ", current->key); // Imprimimos el valor del nodo actual
-        current = current->next;        // Avanzamos al siguiente nodo
-    }
-    printf("\n"); // Indicamos el final de la lista
+int Parent(int i){
+    return i/2;
 }
 
-struct node *deleteLinkedList(struct node *head){
-    struct node *current;
+int Left(int i){
+    return i*2;
+} 
 
-    while (head != NULL) // Mientras la cabeza no sea NULL
-    {
-        current = head;      // Guardamos la referencia al nodo actual
-        head = head->next;   // Avanzamos la cabeza al siguiente nodo
-        free(current);       // Liberamos la memoria del nodo actual
-    }
-    return head;
+int Right(int i){
+    return 2*i + 1;
 }
+
+//Ordena monton por monton hasta la raiz, es llamado por extract
+void Minheapify(int Q[], int i, int heapSize){
+    int l, r, least, temp;
+
+    l = Left(i);
+    r = Right(i);
+    if (l <= heapSize && Q[l] < Q[i])
+        least = l;
+    else
+        least = i;
+
+    if (r <= heapSize && Q[r] < Q[least])
+        least = r;
+    
+    if (least != i)
+    {
+        temp = Q[i];
+        Q[i] = Q[least];
+        Q[least] = temp;
+
+        Minheapify(Q, least, heapSize);
+    }
+}
+
+
+//extraer la raiz, reorganiza el elemento
+int MinPQ_Extract(int Q[], int *heapSize){
+    int min = myNegativeInfinite;
+
+    if (*heapSize < 1)
+        printf("Error: Heap underflow.\n");
+    else
+    {
+        min = Q[1];
+        Q[1] = Q[*heapSize];
+        *heapSize = *heapSize - 1;
+        Minheapify(Q, 1, *heapSize);
+    }
+
+    return min;
+}
+
+//Organizar el arbol
+void MinPQ_DecreaseKey(int Q[], int i, int key){
+    int temp;
+
+    if (key > Q[i])
+        printf("New key is higher than current\n");
+    else
+    {
+        Q[i] = key;
+        while (i > 1 && Q[Parent(i)] > Q[i]) //i llega a la raiz, por lo cual termina el intercambio
+        {
+            temp = Q[i];
+            Q[i] = Q[Parent(i)];
+            Q[Parent(i)] = temp;
+            i = Parent(i);
+        }
+        
+    }
+
+}
+
+void MinPQ_Insert(int Q[], int key, int *heapSize){
+    *heapSize = *heapSize + 1;
+    Q[*heapSize] = myPositiveInfinite;
+    MinPQ_DecreaseKey(Q, *heapSize, key);
+}
+
 
 int main(){
-    int n, r, c, i, indexR, indexC;
-    struct node *tail = NULL, *s1, *s2, *head = NULL;
+    int n, r, c, i, indexR, indexC, contratados[MAXN + 1], heapSize = 0, empleados;
+    struct node *tail = NULL, *s1, *s2;
 
     while(scanf("%d %d %d", &n, &r, &c) != EOF)
     {
         for (i = 1; i <= n; i++)
             tail = InsertElementInCircularDoublyLinkedList(tail, i);
 
+        if (r > n)
+            r %= n;
+        
+        if (c > n)
+            c %= n;
+    
         s1 = tail->next;
         s2 = tail;
 
         while (n > 2)
-        {
+        {   
             for (indexR = 1; indexR < r; indexR++)
                 s1 = s1->next;
 
@@ -144,7 +178,7 @@ int main(){
             }
             else if (s1 == s2) // mismo nodo
             {
-                head = InsertInAscendentLinkedList(head, s1->key);
+                MinPQ_Insert(contratados, s1->key, &heapSize);
                 s2 = s2->prev;
                 s1 = s1->next;
                 tail = s2;
@@ -169,13 +203,16 @@ int main(){
 
         while (tail != NULL)
         {
-            head = InsertInAscendentLinkedList(head, tail->next->key);
+            MinPQ_Insert(contratados, tail->next->key, &heapSize);
             tail = DeleteFirstNodeOfCircularDoublyLinkedList(tail);
         }
 
-        printLinkedList(head);
-        head = deleteLinkedList(head);
-
+        while (heapSize > 0)
+        {
+            empleados = MinPQ_Extract(contratados, &heapSize);
+            printf("%d ", empleados);
+        }
+        printf("\n");
     }
     return 0;
 }
