@@ -16,7 +16,6 @@ puntero a la cabeza de la lista y el número entero a borrar, y devolver el punt
 
 #include <stdio.h>
 #include <stdlib.h>
-
 // Definición de la estructura de un nodo
 struct node
 {
@@ -62,7 +61,6 @@ struct node *InsertInAscendentLinkedList(struct node *head,int n){
                 previous = current;
                 current = current->next;
             }
-            
             newNode->next = current;
             previous->next = newNode;
         }
@@ -113,8 +111,6 @@ struct node *DeleteElementOfAscendentLinkedList(struct node *head, int element){
     }
     return head;   
 }
-
-
 
 int main(){
     int element, operation; 

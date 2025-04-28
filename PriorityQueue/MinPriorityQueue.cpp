@@ -8,19 +8,15 @@
 int Parent(int i){
     return i/2;
 }
-
 int Left(int i){
     return i*2;
 } 
-
 int Right(int i){
     return 2*i + 1;
 }
-
 //Ordena monton por monton hasta la raiz, es llamado por extract
 void Minheapify(int Q[], int i, int heapSize){
     int l, r, least, temp;
-
     l = Left(i);
     r = Right(i);
     if (l <= heapSize && Q[l] < Q[i])
@@ -40,12 +36,11 @@ void Minheapify(int Q[], int i, int heapSize){
         Minheapify(Q, least, heapSize);
     }
 }
-
 int MinPQ_Minimum(int Q[]){
     return Q[1];
 }
-
-//extraer la raiz, reorganiza el elemento
+//extraer la raiz, reorganiza el monton
+//element = MinPQ_Extract(Q, &heapSize);
 int MinPQ_Extract(int Q[], int *heapSize){
     int min = myNegativeInfinite;
 
@@ -61,11 +56,9 @@ int MinPQ_Extract(int Q[], int *heapSize){
 
     return min;
 }
-
-//Organizar el arbol
+//Organizar el arbol a medidad que se inserta
 void MinPQ_DecreaseKey(int Q[], int i, int key){
     int temp;
-
     if (key > Q[i])
         printf("New key is higher than current\n");
     else
@@ -77,16 +70,38 @@ void MinPQ_DecreaseKey(int Q[], int i, int key){
             Q[i] = Q[Parent(i)];
             Q[Parent(i)] = temp;
             i = Parent(i);
-        }
-        
+        }   
     }
-
 }
-
+// MinPQ_Insert(Q, element, &heapSize); heapsize debe iniciar en 0
 void MinPQ_Insert(int Q[], int key, int *heapSize){
     *heapSize = *heapSize + 1;
     Q[*heapSize] = myPositiveInfinite;
     MinPQ_DecreaseKey(Q, *heapSize, key);
+}
+
+int main(){
+    int Q[MAXN + 1],operation, element, heapSize = 0;
+
+    while (scanf("%d", &operation) != EOF)
+    {
+        if (operation == 1) // Insert inr PQ.
+        {
+            scanf("%d", &element);
+            MinPQ_Insert(Q, element, &heapSize);
+        }
+        else
+        {
+            if (operation == 2) // Extract min Value of PQ
+            {
+                element = MinPQ_Extract(Q, &heapSize);
+                printf("%d\n", element);
+            }
+            else
+                printf("Bad option! \n 1. Insert in PQ. \n 2. Extract min value of PQ. \n");
+        }
+    }
+    return 0;
 }
 
 
@@ -126,29 +141,3 @@ void Maxheapify(int Q[], int i, int heapSize){
     }
 }
 */
-
-int main(){
-    int Q[MAXN + 1],operation, element, heapSize = 0;
-
-    while (scanf("%d", &operation) != EOF)
-    {
-        if (operation == 1) // Insert inr PQ.
-        {
-            scanf("%d", &element);
-            MinPQ_Insert(Q, element, &heapSize);
-        }
-        else
-        {
-            if (operation == 2) // Extract min Value of PQ
-            {
-                element = MinPQ_Extract(Q, &heapSize);
-                printf("%d\n", element);
-            }
-            else
-                printf("Bad option! \n 1. Insert in PQ. \n 2. Extract min value of PQ. \n");
-        }
-    }
-    
-
-    return 0;
-}

@@ -47,7 +47,6 @@ struct node *deleteLinkedList(struct node *head){
     return head;
 }
 
-
 int main(){
     int n = 100; 
     struct node *head;
