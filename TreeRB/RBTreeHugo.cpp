@@ -338,8 +338,8 @@ struct nodeRBTree *RB_Delete(struct nodeRBTree *T, struct nodeRBTree *z)
 int main()
 {
     int operation, element;
-    struct nodeRBTree *T, *z;
-    T = AssignNilLeaf();
+    struct nodeRBTree *T = AssignNilLeaf(), *z;
+
     while (scanf(" %d %d", &operation, &element) != EOF)
     {
         if (operation == 1) /* Insert */
@@ -347,7 +347,11 @@ int main()
             T = RB_Insert(T, element);
             InorderTreeWalk(T);
             printf("\n");
-            printf(" key [T]: %d\n", T->key);
+            printf("Root[T]: (%d, ", T->key);
+            if(T->color == RED)
+                printf("RED)\n");
+            else
+                printf("BLACK)\n");
         }
         else
         {
@@ -356,21 +360,35 @@ int main()
                 z = TreeSearch(T, element);
                 if (z->key == NILKey)
                 {
-                    printf(" The %d is not in the Red - Black Tree \n", element);
+                    printf("The %d is not in the RB-Tree \n", element);
                     InorderTreeWalk(T);
                     printf("\n");
+                    if(T->key == NILKey)
+                        printf("Root[T]: (NILKey, ");
+                    else
+                        printf("Root[T]: (%d, ", T->key);
+                    if(T->color == RED)
+                        printf("RED)\n");
+                    else
+                        printf("BLACK)\n");
                 }
                 else
                 {
                     T = RB_Delete(T, z);
                     InorderTreeWalk(T);
                     printf("\n");
-                    if (T->key != NILKey)
-                        printf(" key [T]: %d\n", T->key);
+                    if(T->key == NILKey)
+                        printf("Root[T]: (NILKey. ");
+                    else
+                        printf("Root[T]: (%d, ", T->key);
+                    if(T->color == RED)
+                        printf("RED)\n");
+                    else
+                        printf("BLACK)\n");
                 }
             }
             else
-                printf(" Bad use . \n 1 ... Insert \n 2 ... Delete \n");
+                printf("Bad use.\n 1. Insert\n 2.Delete \n");
         }
     }
     return 0;
