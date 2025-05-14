@@ -154,6 +154,36 @@ void solver(struct graph *G, int source)
 
     BFS(G, source, colors, d, pi);
 
+    //colores
+    for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
+    {
+        if (colors[idVertex] == BLACK)
+            printf("color[%d] = BLACK\n", idVertex);
+        if (colors[idVertex] == GRAY)
+            printf("color[%d] = GRAY\n", idVertex);
+        if (colors[idVertex] == WHITE)
+            printf("color[%d] = WHITE\n", idVertex);
+    }
+
+    //distancias
+    for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
+    {
+        if (d[idVertex] == myInfinite)
+            printf("d[%d] = infinite\n", idVertex);
+        else
+            printf("d[%d] = %d\n", idVertex, d[idVertex]);
+    }
+
+    //padres
+    for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
+    {
+        if (pi[idVertex] == NIL)
+            printf("pi[%d] = NIL\n", idVertex);
+        else
+            printf("pi[%d] = %d\n", idVertex, pi[idVertex]);
+    }
+
+
 }
 
 int main()
@@ -165,8 +195,24 @@ int main()
     {
         G = ReadGraph(vertices, edges);
         PrintGraph(G);
+        solver(G, 5); //ejemplo del cuaderno en clase
         G = DeleteGraph(G);
         PrintGraph(G);
     }
     return 0;
 }
+
+/*
+de los mas grandes a los mas grandes
+vertices y aristas
+7 9 
+7 6
+6 3
+5 4
+5 3
+5 2
+5 1
+4 1
+3 2
+2 1
+*/
