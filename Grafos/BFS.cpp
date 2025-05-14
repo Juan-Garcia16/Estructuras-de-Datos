@@ -225,7 +225,6 @@ int main()
     }
     return 0;
 }
-
 /*
 de los mas grandes a los mas grandes
 vertices y aristas
