@@ -147,13 +147,26 @@ void BFS(struct graph *G, int source, int colors[], int d[], int pi[])
     
 }
 
+void path(int current, int source, int pi[])
+{
+    if (current == source)
+        printf("%d", source);
+    else
+    {
+        path(pi[current], source, pi);
+        printf(" -> %d", current);
+    }
+    
+}
+
 void solver(struct graph *G, int source) 
 {
     int colors[MAXV + 1], d[MAXV + 1], pi[MAXV + 1];
-    int idVertex;
+    int idVertex, farthestVertex = NIL, maxDistance = -1;
 
     BFS(G, source, colors, d, pi);
-
+    
+    printf("\n");
     //colores
     for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
     {
@@ -165,15 +178,23 @@ void solver(struct graph *G, int source)
             printf("color[%d] = WHITE\n", idVertex);
     }
 
+    printf("\n");
     //distancias
     for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
     {
+        if (maxDistance < d[idVertex])
+        {
+            maxDistance = d[idVertex];
+            farthestVertex = idVertex;
+        }
+
         if (d[idVertex] == myInfinite)
             printf("d[%d] = infinite\n", idVertex);
         else
             printf("d[%d] = %d\n", idVertex, d[idVertex]);
     }
 
+    printf("\n");
     //padres
     for (idVertex = 1; idVertex <= G->n_vertex; idVertex++)
     {
@@ -182,7 +203,10 @@ void solver(struct graph *G, int source)
         else
             printf("pi[%d] = %d\n", idVertex, pi[idVertex]);
     }
-
+    printf("\n");
+    printf("Farthest vertex: %d, distance: %d\n", farthestVertex, maxDistance);
+    path(farthestVertex, source, pi);
+    printf("\n");
 
 }
 
