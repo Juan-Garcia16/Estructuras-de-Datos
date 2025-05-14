@@ -374,24 +374,7 @@ int main(){
             scanf("%d %d", &p, &y);
             if(p == 1)
             {
-                z = TreeSearch(T, y);
-                if(z->key != NILKey)
-                {
-                    prev = TreePredecessor(z);
-                    succ = TreeSuccessor(z);
-                    leftValue = prev->key;
-                    rightValue = succ->key;
-                }
-                else //cuando no esta, truco sucio, insertar para obtener left y right, luego eliminar
-                {
-                    T = RB_Insert(T, y);
-                    z = TreeSearch(T, y);
-                    prev = TreePredecessor(z);
-                    succ = TreeSuccessor(z);
-                    leftValue = prev->key;
-                    rightValue = succ->key;
-                    T = RB_Delete(T, z);
-                }
+
                 printf("%d %d\n", leftValue, rightValue);
             }
             else

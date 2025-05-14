@@ -368,6 +368,7 @@ int main(){
         while(current != TreeMaximum(T))
         {
             z = TreeSearch(T, S = current->key);
+            
             //mandar a buscar ese valor, si el elemento esta, seria z->position - current->postion, llevarlo en var global
             //si no esta, se hace el truco sucio
         }
