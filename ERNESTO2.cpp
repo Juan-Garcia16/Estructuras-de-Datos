@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #define MAXN 100000
 #define BLACK 0
 #define GRAY 1
@@ -9,6 +10,14 @@
 #define RED 1
 #define BLACK 0
 #define NILKey -2147483647
+#define myInfinite "zzzzzzzzzz"
+#define MAXS 15
+
+struct student
+{
+    char name[MAXS];
+    int maxH;
+};
 
 struct edge
 {
@@ -30,10 +39,56 @@ struct nodeRBTree
     int key;
     int color;
     int position;
+    char name[MAXS];
+    int index;
     struct nodeRBTree *left;
     struct nodeRBTree *right;
     struct nodeRBTree *p;
 };
+
+typedef struct {
+    char numero [15];
+} nombres;
+
+void myMerge (nombres A[], int p, int q, int r) {
+    int i, j, k;
+    int n1 = q - p + 1;
+    int n2 = r - q; 
+    nombres L[n1 + 2], R[n2 + 2];
+
+    for (i = 1; i <= n1; i++) 
+        L[i] = A[p + i - 1];
+
+    for (j = 1; j <= n2; j++)
+        R[j] = A[q + j];
+
+    strcpy (L[n1 + 1].numero, myInfinite);
+    strcpy (R[n2 + 1].numero, myInfinite);
+
+    i = 1; 
+    j = 1;
+
+    for (k = p; k <= r; k++) {
+        if (strcmp (L[i].numero, R[j].numero) <= 0) {
+            A[k] = L[i];
+            i++;
+        }
+        else {
+            A[k] = R[j];
+            j++;
+        }
+    }
+}
+
+void mergeSort (nombres A[], int p, int r) {
+    int q;
+    if (p < r) {
+        q = (p + r) / 2;
+        mergeSort (A, p, q);
+        mergeSort (A, q + 1, r);
+        myMerge (A, p, q, r);
+    }
+}
 
 void InorderTreeWalk(struct nodeRBTree *x)
 {
@@ -366,7 +421,6 @@ struct nodeRBTree *RB_Delete(struct nodeRBTree *T, struct nodeRBTree *z)
     free(y);
     return T;
 }
-
 //Devuelve un puntero, recibe numero de vertices y total de aristas
 struct graph *ReadGraph(int vertices, int edges)
 {
@@ -423,7 +477,6 @@ void PrintGraph(struct graph *G)
     else
         printf("Empty Graph.\n");
 }
-
 
 struct graph *DeleteGraph(struct graph *G)
 {
@@ -523,16 +576,32 @@ void solver(struct graph *G)
 
 int main()
 {
-    int vertices, edges;
+    int t, N, M, maxH;
+    char name[MAXS];
     struct graph *G;
+    struct student temp[MAXN + 1];
 
-    while(scanf("%d %d", &vertices, &edges) != EOF)
+    scanf("%d", &t);
+    for (int i = 1; i <= t; i++)
     {
-        G = ReadGraph(vertices, edges);
-        PrintGraph(G);
-        solver(G);
+        scanf("%d %d", &N, &M);
+        for (int j = 1; j <= N; j++)
+        {
+            scanf("%s %d", name, &maxH);
+            strcpy(temp[j].name, name);
+            temp[j].maxH = maxH;
+
+            //
+        }
+
+        G = ReadGraph(N, M);
+        //PrintGraph(G);
+        //solver(G, temp, i);
         G = DeleteGraph(G);
-        PrintGraph(G);    
+        //PrintGraph(G);   
     }
     return 0;
 }
+
+//datos en el vector y en el RBT
+//nombre es la clave y el indice es el valor, en si es el j del ciclo (creo)
