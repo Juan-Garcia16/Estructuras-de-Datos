@@ -9,7 +9,7 @@
 #define NIL -1
 #define RED 1
 #define BLACK 0
-#define NILKey -2147483647
+#define NILKey "zzzzzzzzzz"
 #define myInfinite "zzzzzzzzzz"
 #define MAXS 15
 
@@ -36,11 +36,9 @@ struct graph
 
 struct nodeRBTree
 {
-    int key;
+    char key[MAXS];
     int color;
     int position;
-    char name[MAXS];
-    int index;
     struct nodeRBTree *left;
     struct nodeRBTree *right;
     struct nodeRBTree *p;
@@ -48,6 +46,7 @@ struct nodeRBTree
 
 typedef struct {
     char numero [15];
+
 } nombres;
 
 void myMerge (nombres A[], int p, int q, int r) {
@@ -92,34 +91,23 @@ void mergeSort (nombres A[], int p, int r) {
 
 void InorderTreeWalk(struct nodeRBTree *x)
 {
-    if (x->key != NILKey)
+    if (strcmp(x->key, NILKey) != 0)
     {
         InorderTreeWalk(x->left);
         if (x->color == BLACK)
-            printf("( %d, BLACK ) ", x->key);
+            printf("( %s, %d BLACK ) ", x->key, x->position);
         else
-            printf("( %d, RED ) ", x->key);
+            printf("( %s, %d RED ) ", x->key, x->position);
         InorderTreeWalk(x->right);
     }
 }
 
-int position = 1;
-void AssignPositions(struct nodeRBTree *x)
-{
-    if (x->key != NILKey)
-    {
-        AssignPositions(x->left);
-        x->position = position;
-        position++;
-        AssignPositions(x->right);
-    }
-}
 
-struct nodeRBTree *TreeSearch(struct nodeRBTree *x, int k)
+struct nodeRBTree *TreeSearch(struct nodeRBTree *x, char kName[])
 {
-    while ((x->key != NILKey) && (k != x->key))
+    while ((strcmp(x->key, NILKey) != 0) && (strcmp(kName, x->key) != 0))
     {
-        if (k < x->key)
+        if (strcmp(kName, x->key) < 0)
             x = x->left;
         else
             x = x->right;
@@ -129,14 +117,14 @@ struct nodeRBTree *TreeSearch(struct nodeRBTree *x, int k)
 
 struct nodeRBTree *TreeMinimum(struct nodeRBTree *x)
 {
-    while (x->left->key != NILKey)
+    while (strcmp(x->left->key, NILKey) != 0)
         x = x->left;
     return x;
 }
 
 struct nodeRBTree *TreeMaximum(struct nodeRBTree *x)
 {
-    while (x->right->key != NILKey)
+    while (strcmp(x->right->key, NILKey) != 0)
         x = x->right;
     return x;
 }
@@ -144,10 +132,10 @@ struct nodeRBTree *TreeMaximum(struct nodeRBTree *x)
 struct nodeRBTree *TreeSuccessor(struct nodeRBTree *x)
 {
     struct nodeRBTree *y;
-    if (x->right->key != NILKey)
+    if (strcmp(x->right->key, NILKey) != 0)
         return TreeMinimum(x->right);
     y = x->p;
-    while ((y->key != NILKey) && (x == y->right))
+    while ((strcmp(y->key, NILKey) != 0) && (x == y->right))
     {
         x = y;
         y = y->p;
@@ -158,10 +146,10 @@ struct nodeRBTree *TreeSuccessor(struct nodeRBTree *x)
 struct nodeRBTree *TreePredecessor(struct nodeRBTree *x)
 {
     struct nodeRBTree *y;
-    if (x->left->key != NILKey)
+    if (strcmp(x->left->key, NILKey) != 0)
         return TreeMaximum(x->left);
     y = x->p;
-    while ((y->key != NILKey) && (x == y->left))
+    while ((strcmp(y->key, NILKey) != 0) && (x == y->left))
     {
         x = y;
         y = y->p;
@@ -176,7 +164,7 @@ struct nodeRBTree *LeftRotate(struct nodeRBTree *T, struct nodeRBTree *x)
     x->right = y->left;
     y->left->p = x;
     y->p = x->p;
-    if (x->p->key == NILKey)
+    if (strcmp(x->p->key, NILKey) == 0)
         T = y;
     else
     {
@@ -197,7 +185,7 @@ struct nodeRBTree *RightRotate(struct nodeRBTree *T, struct nodeRBTree *x)
     x->left = y->right;
     y->right->p = x;
     y->p = x->p;
-    if (x->p->key == NILKey)
+    if (strcmp(x->p->key, NILKey) == 0)
         T = y;
     else
     {
@@ -216,7 +204,8 @@ struct nodeRBTree *AssignNilLeaf()
     struct nodeRBTree *w;
     w = (struct nodeRBTree *)malloc(sizeof(struct nodeRBTree));
     w->color = BLACK;
-    w->key = NILKey;
+    strcpy(w->key, NILKey);
+    w->position = -1;
     w->left = NULL;
     w->right = NULL;
     return w;
@@ -276,36 +265,39 @@ struct nodeRBTree *RB_InsertFixup(struct nodeRBTree *T, struct nodeRBTree *z)
     return T;
 }
 
-struct nodeRBTree *RB_Insert(struct nodeRBTree *T, int k)
+struct nodeRBTree *RB_Insert(struct nodeRBTree *T, char kName[], int position)
 {
     struct nodeRBTree *x, *y, *z;
     z = (struct nodeRBTree *)malloc(sizeof(struct nodeRBTree));
     z->color = RED;
-    z->key = k;
+    strcpy(z->key, kName);
+    z->position = position;
     z->left = AssignNilLeaf();
     z->left->p = z;
     z->right = AssignNilLeaf();
     z->right->p = z;
-    if (T->key != NILKey)
+
+    
+    if (strcmp(T->key, NILKey) != 0)
         y = T->p;
     else
         y = T;
     x = T;
-    while (x->key != NILKey)
+    while (strcmp(x->key, NILKey) != 0)
     {
         y = x;
-        if (z->key < x->key)
+        if (strcmp(z->key, x->key) < 0)
             x = x->left;
         else
             x = x->right;
     }
     z->p = y;
-    if (y->key == NILKey)
+    if (strcmp(y->key, NILKey) == 0)
         T = z; /* Empty tree . */
     else
     {
         free(x);
-        if (z->key < y->key)
+        if (strcmp(z->key, y->key) < 0)
             y->left = z;
         else
             y->right = z;
@@ -389,16 +381,16 @@ struct nodeRBTree *RB_DeleteFixup(struct nodeRBTree *T, struct nodeRBTree *x)
 struct nodeRBTree *RB_Delete(struct nodeRBTree *T, struct nodeRBTree *z)
 {
     struct nodeRBTree *x, *y;
-    if ((z->left->key == NILKey) || (z->right->key == NILKey))
+    if ((strcmp(z->left->key, NILKey) == 0) || (strcmp(z->right->key, NILKey) == 0))
         y = z;
     else
         y = TreeSuccessor(z);
-    if (y->left->key != NILKey)
+    if (strcmp(y->left->key, NILKey) != 0)
         x = y->left;
     else
         x = y->right;
     x->p = y->p;
-    if (y->p->key == NILKey)
+    if (strcmp(y->p->key, NILKey) == 0)
         T = x;
     else
     {
@@ -409,7 +401,8 @@ struct nodeRBTree *RB_Delete(struct nodeRBTree *T, struct nodeRBTree *z)
     }
     if (y != z)
     {
-        z->key = y->key;
+        strcpy(z->key, y->key);
+        z->position = y->position;
         /* Copy all information fields from y to z. */
     }
     if (y->color == BLACK)
@@ -580,6 +573,7 @@ int main()
     char name[MAXS];
     struct graph *G;
     struct student temp[MAXN + 1];
+    struct nodeRBTree *T = AssignNilLeaf();
 
     scanf("%d", &t);
     for (int i = 1; i <= t; i++)
@@ -591,13 +585,16 @@ int main()
             strcpy(temp[j].name, name);
             temp[j].maxH = maxH;
 
-            //
+            T = RB_Insert(T, name, j);
+
         }
 
-        G = ReadGraph(N, M);
+        InorderTreeWalk(T);
+
+        //G = ReadGraph(N, M);
         //PrintGraph(G);
         //solver(G, temp, i);
-        G = DeleteGraph(G);
+        //G = DeleteGraph(G);
         //PrintGraph(G);   
     }
     return 0;
