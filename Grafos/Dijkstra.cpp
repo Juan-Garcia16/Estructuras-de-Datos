@@ -217,7 +217,7 @@ struct graph *DeleteGraph(struct graph *G)
 }
 
 
-void Prim(struct graph *G, int d[], int pi[], int s)
+void Dijkstra(struct graph *G, int d[], int pi[], int s)
 {
 	int u, v, w, heapSize = 0;
 	struct nodePQ Q[MAXV + 1];
@@ -270,7 +270,7 @@ void Prim(struct graph *G, int d[], int pi[], int s)
 void solver(struct graph *G, int source)
 {
     int d[MAXV + 1], pi[MAXV + 1], idVertex, weightMST = 0;
-    Prim(G, d, pi, source);
+    Dijkstra(G, d, pi, source);
 
     printf("\n");
     for(idVertex = 1; idVertex <= G->n_vertex; idVertex++)
